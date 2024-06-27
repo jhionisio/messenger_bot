@@ -9,6 +9,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Map;
+
 @Service
 public class MessageUseCase {
 
@@ -25,25 +27,42 @@ public class MessageUseCase {
     public void processMessage(Message message) {
         logger.info("Received message: {}", message);
 
-        messageRepository.save(message);
+        try {
+            messageRepository.save(message);
 
-        MessageType messageType = determineMessageType(message);
-        messageProcessor.process(message, messageType);
+            MessageType messageType = determineMessageType(message);
+            messageProcessor.process(message, messageType);
+        } catch (Exception e) {
+            logger.error("Error processing message", e);
+        }
     }
 
     private MessageType determineMessageType(Message message) {
-        if (message.getMessaging().containsKey("message")) {
-            return MessageType.TEXT;
-        } else if (message.getMessaging().containsKey("postback")) {
-            return MessageType.POSTBACK;
-        } else {
-            throw new IllegalArgumentException("Unsupported message format");
+        try {
+            Map<String, Object> messaging = message.getMessaging();
+            if (messaging == null) {
+                throw new IllegalArgumentException("Unsupported message format");
+            }
+
+            if (messaging.containsKey("message")) {
+                return MessageType.TEXT;
+            }
+            if (messaging.containsKey("postback")) {
+                return MessageType.POSTBACK;
+            }
+        } catch (Exception e) {
+            logger.error("Error determining message type", e);
         }
+        throw new IllegalArgumentException("Unsupported message format");
     }
 
     public void addSentMessage(Message message) {
         message.setSentByBot(true);
 
-        messageRepository.save(message);
+        try {
+            messageRepository.save(message);
+        } catch (Exception e) {
+            logger.error("Error saving sent message", e);
+        }
     }
 }

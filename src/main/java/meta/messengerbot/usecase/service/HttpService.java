@@ -18,8 +18,12 @@ public class HttpService {
     private String accessToken;
 
     public void sendMessage(Map<String, Object> messageContent) {
-        String url = "https://graph.facebook.com/v12.0/me/messages?access_token=" + accessToken;
-        logger.info("Sending message: {}", messageContent);
-        restTemplate.postForObject(url, messageContent, String.class);
+        try {
+            String url = "https://graph.facebook.com/v12.0/me/messages?access_token=" + accessToken;
+            logger.info("Sending message: {}", messageContent);
+            restTemplate.postForObject(url, messageContent, String.class);
+        } catch (Exception e) {
+            logger.error("Error sending message", e);
+        }
     }
 }
