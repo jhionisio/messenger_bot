@@ -20,6 +20,7 @@ O objetivo deste projeto é criar um bot escalável e eficiente que possa intera
 
 ## Estrutura do Projeto
 
+```
 messenger-bot/
 ├── src/
 │   ├── main/
@@ -43,6 +44,7 @@ messenger-bot/
 ├── mvnw.cmd
 ├── pom.xml
 └── README.md
+```
 
 ## Potencial de Escalabilidade
 
