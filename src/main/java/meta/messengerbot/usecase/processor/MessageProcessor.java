@@ -1,27 +1,24 @@
 package meta.messengerbot.usecase.processor;
 
+import lombok.Setter;
 import meta.messengerbot.domain.Message;
 import meta.messengerbot.domain.enums.MessageType;
-import meta.messengerbot.usecase.ResponseUseCase;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.function.BiConsumer;
 
+@Setter
 @Component
 public class MessageProcessor {
 
     private static final Logger logger = LoggerFactory.getLogger(MessageProcessor.class);
-    private final ResponseUseCase responseUseCase;
 
-    @Autowired
-    public MessageProcessor(ResponseUseCase responseUseCase) {
-        this.responseUseCase = responseUseCase;
-    }
+    private BiConsumer<String, List<Map<String, String>>> sendButtonMessageFunction;
+    private BiConsumer<String, String> sendTextMessageFunction;
 
     public void process(Message message, MessageType messageType) {
         try {
@@ -54,7 +51,7 @@ public class MessageProcessor {
         if (!"botões".equalsIgnoreCase(text)) {
             return;
         }
-        responseUseCase.sendButtonMessage(recipientId, "Escolha uma opção:", List.of(
+        sendButtonMessageFunction.accept(recipientId, List.of(
                 Map.of("type", "postback", "title", "OI", "payload", "OI_PAYLOAD"),
                 Map.of("type", "postback", "title", "TCHAU", "payload", "TCHAU_PAYLOAD"),
                 Map.of("type", "postback", "title", "QUAL SEU NOME", "payload", "QUAL_SEU_NOME_PAYLOAD"),
@@ -76,45 +73,33 @@ public class MessageProcessor {
         String payload = (String) postback.get("payload");
         String recipientId = (String) ((Map<String, Object>) messaging.get("sender")).get("id");
 
-        List<String> textMessages = new ArrayList<>();
-        List<Map<String, String>> buttonMessages = new ArrayList<>();
-
         try {
             switch (payload) {
                 case "OI_PAYLOAD":
-                    buttonMessages.add(Map.of("type", "postback", "title", "TUDO BEM COM VOCÊ?", "payload", "TUDO_BEM_COM_VC_PAYLOAD"));
-                    buttonMessages.add(Map.of("type", "postback", "title", "TCHAU", "payload", "TCHAU_PAYLOAD"));
-                    textMessages.add("Tudo bem com você?");
+                    sendButtonMessageFunction.accept(recipientId, List.of(
+                            Map.of("type", "postback", "title", "TUDO BEM COM VOCÊ?", "payload", "TUDO_BEM_COM_VC_PAYLOAD"),
+                            Map.of("type", "postback", "title", "TCHAU", "payload", "TCHAU_PAYLOAD")
+                    ));
                     break;
                 case "TCHAU_PAYLOAD":
-                    textMessages.add("Tchau");
+                    sendTextMessageFunction.accept(recipientId, "Tchau");
                     break;
                 case "QUAL_SEU_NOME_PAYLOAD":
-                    textMessages.add("Meu nome é Meta Messenger Bot mas me chamam de William prazer.");
-                    buttonMessages.add(Map.of("type", "postback", "title", "TUDO BEM COM VOCÊ?", "payload", "TUDO_BEM_COM_VC_PAYLOAD"));
-                    buttonMessages.add(Map.of("type", "postback", "title", "TCHAU", "payload", "TCHAU_PAYLOAD"));
+                    sendTextMessageFunction.accept(recipientId, "Meu nome é Meta Messenger Bot mas me chamam de William prazer.");
+                    sendButtonMessageFunction.accept(recipientId, List.of(
+                            Map.of("type", "postback", "title", "TUDO BEM COM VOCÊ?", "payload", "TUDO_BEM_COM_VC_PAYLOAD"),
+                            Map.of("type", "postback", "title", "TCHAU", "payload", "TCHAU_PAYLOAD")
+                    ));
                     break;
                 case "PRA_QUE_VOCE_SERVE_PAYLOAD":
-                    textMessages.add("Eu sou um bot criado para responder mensagens e demonstrar funcionalidades de um chatbot.");
+                    sendTextMessageFunction.accept(recipientId, "Eu sou um bot criado para responder mensagens e demonstrar funcionalidades de um chatbot.");
                     break;
                 default:
                     logger.warn("Unhandled payload: {}", payload);
                     break;
             }
-
-            if (!textMessages.isEmpty()) {
-                for (String textMessage : textMessages) {
-                    responseUseCase.sendTextMessage(recipientId, textMessage);
-                }
-            }
-
-            if (!buttonMessages.isEmpty()) {
-                responseUseCase.sendButtonMessage(recipientId, textMessages.get(0), buttonMessages);
-            }
-
         } catch (Exception e) {
             logger.error("Error processing postback message", e);
         }
     }
-
 }

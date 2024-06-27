@@ -1,6 +1,7 @@
 package meta.messengerbot.usecase;
 
 import meta.messengerbot.domain.Message;
+import meta.messengerbot.usecase.processor.MessageProcessor;
 import meta.messengerbot.usecase.service.HttpService;
 import meta.messengerbot.usecase.service.MessageBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,10 +21,13 @@ public class ResponseUseCase {
     private final HttpService httpService;
 
     @Autowired
-    public ResponseUseCase(MessageUseCase messageUseCase, MessageBuilder messageBuilder, HttpService httpService) {
+    public ResponseUseCase(MessageUseCase messageUseCase, MessageBuilder messageBuilder, HttpService httpService, MessageProcessor messageProcessor) {
         this.messageUseCase = messageUseCase;
         this.messageBuilder = messageBuilder;
         this.httpService = httpService;
+
+        messageProcessor.setSendButtonMessageFunction(this::sendButtonMessage);
+        messageProcessor.setSendTextMessageFunction(this::sendTextMessage);
     }
 
     public void sendTextMessage(String recipientId, String text) {
@@ -36,9 +40,9 @@ public class ResponseUseCase {
         }
     }
 
-    public void sendButtonMessage(String recipientId, String text, List<Map<String, String>> buttons) {
+    public void sendButtonMessage(String recipientId, List<Map<String, String>> buttons) {
         try {
-            Map<String, Object> messageContent = messageBuilder.buildButtonMessage(recipientId, text, buttons);
+            Map<String, Object> messageContent = messageBuilder.buildButtonMessage(recipientId, "Escolha uma opção:", buttons);
             httpService.sendMessage(messageContent);
             saveMessageHistory(messageContent);
         } catch (Exception e) {
