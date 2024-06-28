@@ -7,23 +7,39 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.beans.factory.annotation.Value;
 
 @RestController
-@RequestMapping("/message")
+@RequestMapping("/webhook")
 public class MessageController {
 
     private final MessageUseCase messageUseCase;
     private final MessageConverterToDomain messageConverterToDomain;
     private static final Logger logger = LoggerFactory.getLogger(MessageController.class);
 
+
+    @Value("${facebook.verify.token}")
+    private String verifyToken;
+
+    @Value("${facebook.page.access.token}")
+    private String accessToken;
+
     @Autowired
     public MessageController(MessageUseCase messageUseCase, MessageConverterToDomain messageConverterToDomain) {
         this.messageUseCase = messageUseCase;
         this.messageConverterToDomain = messageConverterToDomain;
+    }
+
+    @GetMapping
+    public String verifyWebhook(@RequestParam("hub.mode") String mode,
+                                @RequestParam("hub.challenge") String challenge,
+                                @RequestParam("hub.verify_token") String token) {
+        if (mode.equals("subscribe") && token.equals(verifyToken)) {
+            return challenge;
+        } else {
+            return "Verification failed";
+        }
     }
 
     @PostMapping

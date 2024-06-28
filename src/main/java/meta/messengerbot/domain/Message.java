@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.List;
 import java.util.Map;
 
 @Data
@@ -17,6 +18,6 @@ public class Message {
     @Id
     private String id;
     private long time;
-    private Map<String, Object> messaging;
+    private List<Messaging> messaging;
     private boolean sentByBot;
 }

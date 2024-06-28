@@ -1,6 +1,8 @@
 package meta.messengerbot.controller.dto;
 
 import java.util.List;
+import java.util.Map;
+
 import lombok.Data;
 
 @Data

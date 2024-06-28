@@ -9,4 +9,5 @@ public class MessagingDTO {
     private RecipientDTO recipient;
     private long timestamp;
     private PostbackDTO postback;
+    private MessageContentDTO message;
 }
