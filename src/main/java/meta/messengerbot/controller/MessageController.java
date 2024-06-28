@@ -21,10 +21,6 @@ public class MessageController {
     private final MessageConverterToDomain messageConverterToDomain;
     private static final Logger logger = LoggerFactory.getLogger(MessageController.class);
 
-
-    @Value("${facebook.verify.token}")
-    private String verifyToken;
-
     @Value("${facebook.page.access.token}")
     private String accessToken;
 
@@ -41,7 +37,7 @@ public class MessageController {
     public String verifyWebhook(@RequestParam("hub.mode") String mode,
                                 @RequestParam("hub.challenge") String challenge,
                                 @RequestParam("hub.verify_token") String token) {
-        if (mode.equals("subscribe") && token.equals(verifyToken)) {
+        if (mode.equals("subscribe") && token.equals(accessToken)) {
             return challenge;
         } else {
             return "Verification failed";
