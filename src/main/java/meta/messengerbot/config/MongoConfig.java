@@ -6,19 +6,15 @@ import com.mongodb.ServerApi;
 import com.mongodb.ServerApiVersion;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class MongoConfig {
 
-    @Value("${mongo.connection.string}")
-    private String connectionStringValue;
-
     @Bean
     public MongoClient mongoClient() {
-        String connectionString = connectionStringValue;
+        String connectionString = "mongodb+srv://mrjoaomarcelo:phBf3SOeWTrenwB6@cluster0.edqsfzc.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
 
         ServerApi serverApi = ServerApi.builder()
                 .version(ServerApiVersion.V1)

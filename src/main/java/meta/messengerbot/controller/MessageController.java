@@ -1,11 +1,14 @@
 package meta.messengerbot.controller;
 
+import com.mongodb.client.MongoDatabase;
+import meta.messengerbot.config.MongoConfig;
 import meta.messengerbot.controller.converter.MessageConverterToDomain;
 import meta.messengerbot.controller.dto.MessageDTO;
 import meta.messengerbot.usecase.MessageUseCase;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.beans.factory.annotation.Value;
@@ -24,6 +27,9 @@ public class MessageController {
 
     @Value("${facebook.page.access.token}")
     private String accessToken;
+
+    @Autowired
+    private MongoConfig mongoConfig;
 
     @Autowired
     public MessageController(MessageUseCase messageUseCase, MessageConverterToDomain messageConverterToDomain) {
@@ -52,4 +58,5 @@ public class MessageController {
             return ResponseEntity.status(500).body("ERROR");
         }
     }
+
 }
