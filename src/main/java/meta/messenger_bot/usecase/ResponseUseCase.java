@@ -101,6 +101,7 @@ public class ResponseUseCase {
 
         messageDomain.setMessaging(Collections.singletonList(messaging));
         messageDomain.setSentByBot(true);
+        messageRepository.save(messageDomain);
         return messageDomain;
     }
 
@@ -115,7 +116,8 @@ public class ResponseUseCase {
 
             messageDomain.setMessaging(Collections.singletonList(messaging));
             messageDomain.setSentByBot(true);
-            return messageDomain;
+        messageRepository.save(messageDomain);
+        return messageDomain;
     }
 
 
