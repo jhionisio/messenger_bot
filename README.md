@@ -72,7 +72,7 @@ A arquitetura do projeto segue o padrão de camadas, que é fundamental para a e
 - **Extensibilidade**: Novos tipos de mensagens e funcionalidades podem ser adicionados sem modificar a estrutura existente.
 - **Desempenho**: Uso de MongoDB para armazenamento rápido e eficiente de logs.
 
-## Como Rodar o Projeto no IntelliJ
+## Como testar o projeto localmente ou deployado
 
 ### Pré-requisitos
 
