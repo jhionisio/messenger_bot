@@ -101,11 +101,16 @@ A arquitetura do projeto segue o padrão de camadas, que é fundamental para a e
 
 ## Como testar o projeto localmente ou deployado
 
-### Pré-requisitos
+### Pré-requisitos para testar localmente
 
 - **JDK 17**
-- **IntelliJ IDEA**
+- **IntelliJ IDEA ou outro compilador**
 - **MongoDB**
+- **Ferrmanta de teste. Ex\ Insomnia ou postman**
+
+ ### Pré-requisitos para testar deployado
+
+- **Ferrmanta de teste. Ex\ Insomnia ou postman**
 
 ### Passos para Rodar
 
@@ -123,20 +128,17 @@ A arquitetura do projeto segue o padrão de camadas, que é fundamental para a e
 
 ----
 
-3. **Configurar MongoDB**
-----
-1. Certifique-se de que o MongoDB está rodando em `localhost` na porta padrão `27017`.
-----
-4. **Configurar Variáveis de Ambiente**
+3. **Configurar Variáveis de Ambiente**
 
 Configure o token de acesso da página do Messenger em uma variável de ambiente ou diretamente no arquivo `application.properties`:
 
 ```properties
 server.port=4444
-spring.data.mongodb.uri=mongodb://localhost:27017/messengerbot
+facebook.page.access.token=seu-token
+spring.data.mongodb.uri=mongodb+srv://mrjoaomarcelo:Joao1404@cluster0.edqsfzc.mongodb.net/smarters-test?retryWrites=true&w=majority
 ```
 
-5. **Build e Run**
+4. **Build e Run**
 
 ----
 
@@ -145,14 +147,14 @@ spring.data.mongodb.uri=mongodb://localhost:27017/messengerbot
 3. Em seguida, navegue até `Lifecycle > install` e clique duas vezes para compilar o projeto.
 4. Finalmente, clique com o botão direito em `MessengerBotApplication.java` e selecione `Run`.
 ----
-6. **Testar o Bot (Rodando localmente)**
+5. **Testar o Bot (Rodando localmente)**
 
 ----
 
 1. O bot estará rodando na porta `4444`.
 2. Você pode usar ferramentas como Postman ou o próprio Messenger para enviar mensagens e verificar as respostas.
 ----
-7. **Testar o Bot via serviços (Testar sistema deployado)**
+6. **Testar o Bot via serviços (Testar sistema deployado)**
 
 ----
 
