@@ -20,5 +20,5 @@ public class MessageDomain {
     private String id;
     private long time;
     private List<Messaging> messaging;
-    private boolean sentByBot;
+    private int sentByBot;
 }

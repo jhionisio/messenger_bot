@@ -68,14 +68,4 @@ public class MessageUseCase {
         }
         throw new IllegalArgumentException("Unsupported message format");
     }
-
-    public void addSentMessage(MessageDomain messageDomain) {
-        messageDomain.setSentByBot(true);
-
-        try {
-            messageRepository.save(messageDomain);
-        } catch (Exception e) {
-            logger.error("Error saving sent message", e);
-        }
-    }
 }

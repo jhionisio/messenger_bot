@@ -67,7 +67,7 @@ public class ResponseUseCase {
         messaging.setSentContent(messageContent);
 
         messageDomain.setMessaging(Collections.singletonList(messaging));
-        messageDomain.setSentByBot(true);
+        messageDomain.setSentByBot(1);
         messageRepository.save(messageDomain);
     }
 
@@ -82,7 +82,7 @@ public class ResponseUseCase {
             messaging.setSentContent(messageContent);
 
             messageDomain.setMessaging(Collections.singletonList(messaging));
-            messageDomain.setSentByBot(true);
+            messageDomain.setSentByBot(1);
             messageRepository.save(messageDomain);
         } catch (Exception e) {
             logger.error("Error saving button message history", e);
@@ -90,33 +90,50 @@ public class ResponseUseCase {
     }
 
     private MessageDomain returnTextMessageHistory(Map<String, Object> messageContent, String recipientId) {
-        MessageDomain messageDomain = new MessageDomain();
-        messageDomain.setCollectionId(UUID.randomUUID().toString());
-        messageDomain.setTime(System.currentTimeMillis());
-
-        Messaging messaging = new Messaging();
-        messaging.setSentContent(messageContent);
-
-        messageDomain.setMessaging(Collections.singletonList(messaging));
-        messageDomain.setSentByBot(true);
-        messageRepository.save(messageDomain);
-        return messageDomain;
-    }
-
-    private MessageDomain returnButtonMessageHistory(Map<String, Object> messageContent, String recipientId) {
+        try {
             MessageDomain messageDomain = new MessageDomain();
             messageDomain.setCollectionId(UUID.randomUUID().toString());
             messageDomain.setTime(System.currentTimeMillis());
 
             Messaging messaging = new Messaging();
-
             messaging.setSentContent(messageContent);
 
             messageDomain.setMessaging(Collections.singletonList(messaging));
-            messageDomain.setSentByBot(true);
-        messageRepository.save(messageDomain);
-        return messageDomain;
+            messageDomain.setSentByBot(1);
+            messageRepository.save(messageDomain);
+            return messageDomain;
+        } catch (Exception e) {
+            logger.error("Error returning text message history", e);
+            return null;
+        }
     }
 
+    private MessageDomain returnButtonMessageHistory(Map<String, Object> messageContent, String recipientId) {
+        try {
+            MessageDomain messageDomain = new MessageDomain();
+            messageDomain.setCollectionId(UUID.randomUUID().toString());
+            messageDomain.setTime(System.currentTimeMillis());
+
+            Messaging messaging = new Messaging();
+            messaging.setSentContent(messageContent);
+
+            messageDomain.setMessaging(Collections.singletonList(messaging));
+            addSentMessage(messageDomain);
+            return messageDomain;
+        } catch (Exception e) {
+            logger.error("Error returning button message history", e);
+            return null;
+        }
+    }
+
+    public void addSentMessage(MessageDomain messageDomain) {
+        messageDomain.setSentByBot(1);
+
+        try {
+            messageRepository.save(messageDomain);
+        } catch (Exception e) {
+            logger.error("Error saving sent message", e);
+        }
+    }
 
 }
