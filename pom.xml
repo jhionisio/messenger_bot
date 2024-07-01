@@ -9,7 +9,7 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>meta</groupId>
-	<artifactId>messengerbot</artifactId>
+	<artifactId>messenger_bot</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>messengerbot</name>
 	<description>This project is a backend system for handling messages from the Meta Messenger platform using Spring Boot. It receives, processes, logs interactions, and sends structured responses. The main features include handling text messages and button lists, making it a solid base for creating advanced chatbot functions. The system is designed with future scalability in mind, allowing for easy expansion and integration of additional features as the needs of the application grow.</description>

@@ -1,0 +1,122 @@
+package meta.messenger_bot.usecase;
+
+import meta.messenger_bot.domain.MessageContent;
+import meta.messenger_bot.domain.MessageDomain;
+import meta.messenger_bot.domain.Messaging;
+import meta.messenger_bot.domain.Postback;
+import meta.messenger_bot.repository.MessageRepository;
+import meta.messenger_bot.usecase.service.HttpService;
+import meta.messenger_bot.usecase.service.MessageBuilder;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import java.util.UUID;
+
+import java.util.*;
+
+@Service
+public class ResponseUseCase {
+
+    private static final Logger logger = LoggerFactory.getLogger(ResponseUseCase.class);
+    private final MessageRepository messageRepository;
+    private final MessageBuilder messageBuilder;
+    private final HttpService httpService;
+
+    @Autowired
+    public ResponseUseCase(MessageRepository messageRepository, MessageBuilder messageBuilder, HttpService httpService) {
+        this.messageRepository = messageRepository;
+        this.messageBuilder = messageBuilder;
+        this.httpService = httpService;
+    }
+
+    public void sendTextMessage(String recipientId, String text) {
+        try {
+            Map<String, Object> messageContent = messageBuilder.buildTextMessage(recipientId, text);
+            httpService.sendMessage(messageContent);
+            saveTextMessageHistory(messageContent, recipientId);
+        } catch (Exception e) {
+            logger.error("Error sending text message", e);
+        }
+    }
+
+    public void sendButtonMessage(String recipientId, String text, List<Map<String, String>> buttons) {
+        try {
+            Map<String, Object> messageContent = messageBuilder.buildButtonMessage(recipientId, text, buttons);
+            httpService.sendMessage(messageContent);
+            saveButtonMessageHistory( messageContent, recipientId);
+        } catch (Exception e) {
+            logger.error("Error sending button message", e);
+        }
+    }
+
+    public MessageDomain returnTextMessage(String recipientId, String text) {
+            Map<String, Object> messageContent = messageBuilder.buildTextMessage(recipientId, text);
+            return returnTextMessageHistory( messageContent, recipientId);
+    }
+
+    public MessageDomain returnButtonMessage(String recipientId, String text, List<Map<String, String>> buttons) {
+            Map<String, Object> messageContent = messageBuilder.buildButtonMessage(recipientId, text, buttons);
+            return returnButtonMessageHistory( messageContent, recipientId);
+    }
+
+   private void saveTextMessageHistory(Map<String, Object> messageContent, String recipientId) {
+        MessageDomain messageDomain = new MessageDomain();
+        messageDomain.setCollectionId(UUID.randomUUID().toString());
+        messageDomain.setTime(System.currentTimeMillis());
+
+        Messaging messaging = new Messaging();
+        messaging.setSentContent(messageContent);
+
+        messageDomain.setMessaging(Collections.singletonList(messaging));
+        messageDomain.setSentByBot(true);
+        messageRepository.save(messageDomain);
+    }
+
+    private void saveButtonMessageHistory(Map<String, Object> messageContent, String recipientId) {
+        try {
+            MessageDomain messageDomain = new MessageDomain();
+            messageDomain.setCollectionId(UUID.randomUUID().toString());
+            messageDomain.setTime(System.currentTimeMillis());
+
+            Messaging messaging = new Messaging();
+
+            messaging.setSentContent(messageContent);
+
+            messageDomain.setMessaging(Collections.singletonList(messaging));
+            messageDomain.setSentByBot(true);
+            messageRepository.save(messageDomain);
+        } catch (Exception e) {
+            logger.error("Error saving button message history", e);
+        }
+    }
+
+    private MessageDomain returnTextMessageHistory(Map<String, Object> messageContent, String recipientId) {
+        MessageDomain messageDomain = new MessageDomain();
+        messageDomain.setCollectionId(UUID.randomUUID().toString());
+        messageDomain.setTime(System.currentTimeMillis());
+
+        Messaging messaging = new Messaging();
+        messaging.setSentContent(messageContent);
+
+        messageDomain.setMessaging(Collections.singletonList(messaging));
+        messageDomain.setSentByBot(true);
+        return messageDomain;
+    }
+
+    private MessageDomain returnButtonMessageHistory(Map<String, Object> messageContent, String recipientId) {
+            MessageDomain messageDomain = new MessageDomain();
+            messageDomain.setCollectionId(UUID.randomUUID().toString());
+            messageDomain.setTime(System.currentTimeMillis());
+
+            Messaging messaging = new Messaging();
+
+            messaging.setSentContent(messageContent);
+
+            messageDomain.setMessaging(Collections.singletonList(messaging));
+            messageDomain.setSentByBot(true);
+            return messageDomain;
+    }
+
+
+}
