@@ -172,21 +172,22 @@ spring.data.mongodb.uri=mongodb+srv://mrjoaomarcelo:Joao1404@cluster0.edqsfzc.mo
   "id": "PAGE_ID",
   "time": 1458692752478,
   "messaging": [
-    {
-      "sender": {
-        "id": "USER_ID"
-      },
-      "recipient": {
-        "id": "PAGE_ID"
-      },
-      "timestamp": 1762902671,
-      "postback": {
-        "mid": "mid.1457764197618:41d102a3e1ae206a38",
-        "payload": "PRA_QUE_VOCE_SERVE_PAYLOAD"
+      {
+        "sender": {
+          "id": "USER_ID"
+        },
+        "recipient": {
+          "id": "PAGE_ID"
+        },
+        "timestamp": 1762902671,
+        "postback": {
+          "mid": "mid.1457764197618:41d102a3e1ae206a38",
+          "payload": "PRA_QUE_VOCE_SERVE_PAYLOAD"
+        }
       }
-    }
-  ]
-}```
+    ]
+  }
+```
 
   POST -> https://smarters-test-e1ee18c2d4c7.herokuapp.com/webhook/local-test
   (Envia uma mensagem de texto e recebe uma mensagem de payload para botões clicáveis de resposta.)
