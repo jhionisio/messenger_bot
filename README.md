@@ -59,7 +59,14 @@ messenger_bot/
 │   │   │               │   └── processor/
 │   │   │               │   └── service/
 │   │   │               ├── domain/
-│   │   │               │   └── enums/
+│   │   │               │   ├── MessageDomain.java
+│   │   │               │   ├── enums/
+│   │   │               │   └── messaging/
+│   │   │               │       ├── Messaging.java
+│   │   │               │       ├── Sender.java
+│   │   │               │       ├── Recipient.java
+│   │   │               │       ├── Postback.java
+│   │   │               │       └── MessageContent.java
 │   │   │               ├── config/
 │   │   │               └── repository/
 │   └── resources/
