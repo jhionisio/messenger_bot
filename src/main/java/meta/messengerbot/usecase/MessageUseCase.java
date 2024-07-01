@@ -1,6 +1,6 @@
 package meta.messengerbot.usecase;
 
-import meta.messengerbot.domain.Message;
+import meta.messengerbot.domain.MessageDomain;
 import meta.messengerbot.domain.Messaging;
 import meta.messengerbot.domain.enums.MessageType;
 import meta.messengerbot.repository.MessageRepository;
@@ -25,7 +25,7 @@ public class MessageUseCase {
         this.messageProcessor = messageProcessor;
     }
 
-    public void processMessage(Message message) {
+    public void processMessage(MessageDomain message) {
         logger.info("Received message: {}", message);
 
         try {
@@ -38,9 +38,9 @@ public class MessageUseCase {
         }
     }
 
-    private MessageType determineMessageType(Message message) {
+    private MessageType determineMessageType(MessageDomain messageDomain) {
         try {
-            List<Messaging> messagingList = message.getMessaging();
+            List<Messaging> messagingList = messageDomain.getMessaging();
             for (Messaging messaging : messagingList) {
                 if (messaging.getMessageContent() != null) {
                     return MessageType.TEXT;
@@ -55,11 +55,11 @@ public class MessageUseCase {
         throw new IllegalArgumentException("Unsupported message format");
     }
 
-    public void addSentMessage(Message message) {
-        message.setSentByBot(true);
+    public void addSentMessage(MessageDomain messageDomain) {
+        messageDomain.setSentByBot(true);
 
         try {
-            messageRepository.save(message);
+            messageRepository.save(messageDomain);
         } catch (Exception e) {
             logger.error("Error saving sent message", e);
         }

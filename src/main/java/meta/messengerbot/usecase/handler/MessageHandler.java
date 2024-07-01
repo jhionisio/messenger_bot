@@ -1,7 +1,7 @@
 package meta.messengerbot.usecase.handler;
 
-import meta.messengerbot.domain.Message;
+import meta.messengerbot.domain.MessageDomain;
 
 public interface MessageHandler {
-    void handle(Message message);
+    void handle(MessageDomain messageDomain);
 }

@@ -1,7 +1,7 @@
 package meta.messengerbot.controller.converter;
 
 import meta.messengerbot.controller.dto.MessageDTO;
-import meta.messengerbot.domain.Message;
+import meta.messengerbot.domain.MessageDomain;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 
@@ -14,7 +14,7 @@ public class MessageConverterToDTO {
         this.modelMapper = modelMapper;
     }
 
-    public MessageDTO toDTO(Message message) {
-        return modelMapper.map(message, MessageDTO.class);
+    public MessageDTO toDTO(MessageDomain messageDomain) {
+        return modelMapper.map(messageDomain, MessageDTO.class);
     }
 }

@@ -2,6 +2,7 @@ package meta.messengerbot.usecase;
 
 import meta.messengerbot.domain.Message;
 import meta.messengerbot.domain.MessageContent;
+import meta.messengerbot.domain.MessageDomain;
 import meta.messengerbot.domain.Messaging;
 import meta.messengerbot.domain.Postback;
 import meta.messengerbot.repository.MessageRepository;
@@ -42,37 +43,51 @@ public class ResponseUseCase {
         }
     }
 
+    private void saveTextMessageHistory(MessageContent messageContent, String recipientId) {
+        MessageDomain messageDomain = new MessageDomain();
+        messageDomain.setTime(System.currentTimeMillis());
+
+        Messaging messaging = new Messaging();
+        messaging.setMessageContent(messageContent);
+
+        messageDomain.setMessaging(Collections.singletonList(messaging));
+        messageDomain.setSentByBot(true);
+        messageRepository.save(messageDomain);
+    }
+
     public void sendButtonMessage(String recipientId, String text, List<Map<String, String>> buttons) {
         try {
             Map<String, Object> messageContent = messageBuilder.buildButtonMessage(recipientId, text, buttons);
             httpService.sendMessage(messageContent);
-            saveButtomMessageHistory((Postback) messageContent, recipientId);
+            saveButtonMessageHistory(messageContent, recipientId);
         } catch (Exception e) {
             logger.error("Error sending button message", e);
         }
     }
 
-    private void saveTextMessageHistory(MessageContent messageContent, String recipientId) {
-        Message message = new Message();
-        message.setTime(System.currentTimeMillis());
+    private void saveButtonMessageHistory(Map<String, Object> messageContent, String recipientId) {
+        try {
+            MessageDomain messageDomain = new MessageDomain();
+            messageDomain.setTime(System.currentTimeMillis());
 
-        Messaging messaging = new Messaging();
-        messaging.setMessageContent(messageContent);
+            Messaging messaging = new Messaging();
+            Postback newPostback = new Postback();
 
-        message.setMessaging(Collections.singletonList(messaging));
-        message.setSentByBot(true);
-        messageRepository.save(message);
+            Map<String, Object> attachment = (Map<String, Object>) messageContent.get("attachment");
+            Map<String, Object> payload = (Map<String, Object>) attachment.get("payload");
+            String mid = (String) payload.get("mid");
+            String postbackPayload = (String) payload.get("payload");
+
+            newPostback.setMid(mid);
+            newPostback.setPayload(postbackPayload);
+            messaging.setPostback(newPostback);
+
+            messageDomain.setMessaging(Collections.singletonList(messaging));
+            messageDomain.setSentByBot(true);
+            messageRepository.save(messageDomain);
+        } catch (Exception e) {
+            logger.error("Error saving button message history", e);
+        }
     }
 
-    private void saveButtomMessageHistory(Postback postback, String recipientId) {
-        Message message = new Message();
-        message.setTime(System.currentTimeMillis());
-
-        Messaging messaging = new Messaging();
-        messaging.setPostback(postback);
-
-        message.setMessaging(Collections.singletonList(messaging));
-        message.setSentByBot(true);
-        messageRepository.save(message);
-    }
 }

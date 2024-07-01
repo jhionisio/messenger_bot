@@ -14,7 +14,7 @@ import java.util.Map;
 @NoArgsConstructor
 @AllArgsConstructor
 @Document(collection = "messages")
-public class Message {
+public class MessageDomain {
     @Id
     private String id;
     private long time;

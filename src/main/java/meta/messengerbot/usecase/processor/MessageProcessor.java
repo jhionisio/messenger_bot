@@ -1,8 +1,7 @@
 package meta.messengerbot.usecase.processor;
 
-import lombok.Setter;
-import meta.messengerbot.domain.Message;
 import meta.messengerbot.domain.MessageContent;
+import meta.messengerbot.domain.MessageDomain;
 import meta.messengerbot.domain.Messaging;
 import meta.messengerbot.domain.Postback;
 import meta.messengerbot.domain.enums.MessageType;
@@ -32,22 +31,22 @@ public class MessageProcessor {
         this.responseUseCase = responseUseCase;
     }
 
-    public void process(Message message, MessageType messageType) {
+    public void process(MessageDomain messageDomain, MessageType messageType) {
         try {
             if (messageType == MessageType.TEXT) {
-                processTextMessage(message);
+                processTextMessage(messageDomain);
                 return;
             }
             if (messageType == MessageType.POSTBACK) {
-                processPostbackMessage(message);
+                processPostbackMessage(messageDomain);
             }
         } catch (Exception e) {
             logger.error("Error processing message", e);
         }
     }
 
-    private void processTextMessage(Message message) {
-        List<Messaging> messagingList = message.getMessaging();
+    private void processTextMessage(MessageDomain messageDomain) {
+        List<Messaging> messagingList = messageDomain.getMessaging();
         for (Messaging messaging : messagingList) {
             MessageContent messageContent = messaging.getMessageContent();
             if (messageContent == null) {
@@ -68,8 +67,8 @@ public class MessageProcessor {
         }
     }
 
-    private void processPostbackMessage(Message message) {
-        List<Messaging> messagingList = message.getMessaging();
+    private void processPostbackMessage(MessageDomain messageDomain) {
+        List<Messaging> messagingList = messageDomain.getMessaging();
         for (Messaging messaging : messagingList) {
             Postback postback = messaging.getPostback();
             if (postback == null) {
