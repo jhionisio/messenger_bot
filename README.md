@@ -81,7 +81,7 @@ messenger_bot/
 
 ### Arquitetura
 
-A arquitetura do projeto segue o padrão de camadas, que é fundamental para a escalabilidade futura. Visando às beneces da arquitetura hexagonal junto à conceitos de DDD(Domain Driven Design) para gerar facilmente APIs que possam ser integradas à arquitetura de BFF e gateways de micro-serviços. As camadas são organizadas da seguinte forma:
+A arquitetura do projeto segue o padrão de camadas, que é fundamental para a escalabilidade futura. Visando às benesses da arquitetura hexagonal junto a conceitos de DDD(Domain Driven Design) para gerar facilmente APIs que possam ser integradas à arquitetura de BFF e gateways de micro-serviços. As camadas são organizadas da seguinte forma:
 
 1. **Controller**: Responsável por receber as requisições e retornar as respostas.
 2. **Use Case**: Contém a lógica de negócio e manipulação de dados.
