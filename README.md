@@ -20,6 +20,26 @@ O objetivo deste projeto é criar um bot escalável e eficiente que possa intera
 - **SLF4J** para logging
 - **Heroku**
 
+## Padrão de commit
+(Escopo geral de determinado desenvolvimento feito)
+DONE:
+
+(Escopo geral de determinado desenvolvimento em progresso)
+WIP:
+
+(Mudanças do código para atender o escopo)
+FIX:
+
+## Padrão de branch
+(Branch principal)
+main/
+
+(Branches de adição de novas features)
+feature/
+
+(Branch de correção)
+fix/
+
 ## Estrutura do Projeto
 
 ```
