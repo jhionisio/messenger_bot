@@ -109,6 +109,8 @@ spring.data.mongodb.uri=mongodb://localhost:27017/messengerbot
 
 5. **Build e Run**
 
+----
+
 1. No IntelliJ, abra o painel `Maven` à direita.
 2. Navegue até `Lifecycle > clean` e clique duas vezes para limpar o projeto.
 3. Em seguida, navegue até `Lifecycle > install` e clique duas vezes para compilar o projeto.
@@ -116,10 +118,14 @@ spring.data.mongodb.uri=mongodb://localhost:27017/messengerbot
 
 6. **Testar o Bot (Rodando localmente)**
 
+----
+
 1. O bot estará rodando na porta `4444`.
 2. Você pode usar ferramentas como Postman ou o próprio Messenger para enviar mensagens e verificar as respostas.
 
 7. **Testar o Bot via serviços (Testar sistema deployado)**
+
+----
 
 1. Baixar o MongoDB Compass.
 2. Adicionar à conexão ao meu Atlas pessoal. (Conn: mongodb+srv://mrjoaomarcelo:Joao1404@cluster0.edqsfzc.mongodb.net/)
