@@ -1,9 +1,9 @@
 package meta.messenger_bot.usecase.processor;
 
-import meta.messenger_bot.domain.MessageContent;
+import meta.messenger_bot.domain.massaging.MessageContent;
 import meta.messenger_bot.domain.MessageDomain;
-import meta.messenger_bot.domain.Messaging;
-import meta.messenger_bot.domain.Postback;
+import meta.messenger_bot.domain.massaging.Messaging;
+import meta.messenger_bot.domain.massaging.Postback;
 import meta.messenger_bot.domain.enums.MessageType;
 import meta.messenger_bot.usecase.ResponseUseCase;
 import org.springframework.beans.factory.annotation.Autowired;

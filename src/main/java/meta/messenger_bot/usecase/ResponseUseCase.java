@@ -1,9 +1,7 @@
 package meta.messenger_bot.usecase;
 
-import meta.messenger_bot.domain.MessageContent;
 import meta.messenger_bot.domain.MessageDomain;
-import meta.messenger_bot.domain.Messaging;
-import meta.messenger_bot.domain.Postback;
+import meta.messenger_bot.domain.massaging.Messaging;
 import meta.messenger_bot.repository.MessageRepository;
 import meta.messenger_bot.usecase.service.HttpService;
 import meta.messenger_bot.usecase.service.MessageBuilder;

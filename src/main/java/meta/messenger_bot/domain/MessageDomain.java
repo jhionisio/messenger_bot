@@ -4,6 +4,7 @@ package meta.messenger_bot.domain;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import meta.messenger_bot.domain.massaging.Messaging;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 

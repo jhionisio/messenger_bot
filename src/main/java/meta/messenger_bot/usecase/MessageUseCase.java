@@ -1,7 +1,7 @@
 package meta.messenger_bot.usecase;
 
 import meta.messenger_bot.domain.MessageDomain;
-import meta.messenger_bot.domain.Messaging;
+import meta.messenger_bot.domain.massaging.Messaging;
 import meta.messenger_bot.domain.enums.MessageType;
 import meta.messenger_bot.repository.MessageRepository;
 import meta.messenger_bot.usecase.processor.MessageProcessor;
