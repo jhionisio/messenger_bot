@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class MessageUseCase {
@@ -29,6 +30,7 @@ public class MessageUseCase {
         logger.info("Received message: {}", message);
 
         try {
+            message.setCollectionId(UUID.randomUUID().toString());
             messageRepository.save(message);
 
             MessageType messageType = determineMessageType(message);
@@ -42,6 +44,7 @@ public class MessageUseCase {
         logger.info("Received message: {}", message);
 
         try {
+            message.setCollectionId(UUID.randomUUID().toString());
             messageRepository.save(message);
 
             MessageType messageType = determineMessageType(message);
